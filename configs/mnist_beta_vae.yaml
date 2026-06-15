@@ -1,0 +1,26 @@
+experiment_name: mnist_beta_vae
+
+data:
+  name: mnist
+  batch_size: 128
+  num_workers: 2
+  data_dir: data
+
+model:
+  encoder: mlp
+  decoder: mlp
+  latent_dim: 16
+  hidden_dim: 512
+
+prior:
+  type: standard_normal
+
+loss:
+  beta: 4.0
+  kl_mode: analytic
+  reconstruction: bce
+
+training:
+  epochs: 20
+  lr: 0.001
+  device: cuda

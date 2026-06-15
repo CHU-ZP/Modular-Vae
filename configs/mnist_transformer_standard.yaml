@@ -1,0 +1,30 @@
+experiment_name: mnist_transformer_standard
+
+data:
+  name: mnist
+  batch_size: 128
+  num_workers: 2
+  data_dir: data
+
+model:
+  encoder: transformer
+  decoder: transformer
+  latent_dim: 16
+  patch_size: 7
+  d_model: 128
+  num_layers: 2
+  num_heads: 4
+  mlp_ratio: 4.0
+
+prior:
+  type: standard_normal
+
+loss:
+  beta: 1.0
+  kl_mode: analytic
+  reconstruction: bce
+
+training:
+  epochs: 20
+  lr: 0.001
+  device: cuda

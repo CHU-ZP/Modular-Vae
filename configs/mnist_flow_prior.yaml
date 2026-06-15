@@ -1,0 +1,28 @@
+experiment_name: mnist_flow_prior
+
+data:
+  name: mnist
+  batch_size: 128
+  num_workers: 2
+  data_dir: data
+
+model:
+  encoder: mlp
+  decoder: mlp
+  latent_dim: 16
+  hidden_dim: 512
+
+prior:
+  type: flow
+  num_flow_layers: 4
+  flow_hidden_dim: 128
+
+loss:
+  beta: 1.0
+  kl_mode: monte_carlo
+  reconstruction: bce
+
+training:
+  epochs: 30
+  lr: 0.001
+  device: cuda
