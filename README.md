@@ -82,7 +82,21 @@ $$
 \log p_\psi(z) = \log p_0(f_\psi^{-1}(z)) + \log\left|\det\frac{\partial f_\psi^{-1}}{\partial z}\right|
 $$
 
-The Transformer VAE in this repository is not a different probabilistic model. It is only a patch-based backbone behind the same posterior, sampling, prior, and ELBO interface.
+## VAE Variants
+
+All variants keep the same probabilistic route:
+
+```text
+x -> q_phi(z|x) -> z -> p_theta(x|z)
+```
+
+They differ only in which module is swapped.
+
+- **MLP VAE** is the baseline experiment: a fully connected encoder and decoder, a diagonal Gaussian posterior, a standard Gaussian prior, and analytic KL.
+- **CNN VAE** keeps the same posterior, prior, and ELBO, but replaces the MLP backbone with convolutional encoder and decoder networks that better match image structure.
+- **Beta-VAE** keeps the MLP architecture and standard Gaussian prior, but increases the KL weight beta. This makes the latent space more strongly regularized, usually trading reconstruction sharpness for a more constrained representation.
+- **Transformer VAE** is not a different probabilistic model. It is a patch-based Transformer backbone behind the same posterior, sampling, prior, and ELBO interface.
+- **Flow-prior VAE** keeps the Gaussian posterior but replaces the standard normal prior with a RealNVP-style flow prior. Because the prior is no longer a plain standard Gaussian, its KL term is estimated with `log q_phi(z|x) - log p_psi(z)`.
 
 ## What Is Modular
 
