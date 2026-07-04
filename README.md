@@ -1,4 +1,4 @@
-# Modular VAE Demo
+# Modular VAE
 
 A clean PyTorch demo of Variational Autoencoders as modular probabilistic latent representation learning.
 
