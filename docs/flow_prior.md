@@ -16,14 +16,16 @@ $$
 z = f_\psi(u)
 $$
 
-The log probability uses the inverse transformation:
+The log probability uses the inverse transformation. First map the observed latent point back to the base variable:
 
 $$
-\log p_\psi(z)
-=
-\log p_0(f_\psi^{-1}(z))
-+
-\log\left|\det\frac{\partial f_\psi^{-1}}{\partial z}\right|
+u = f_\psi^{-1}(z)
+$$
+
+Then apply the change-of-variables formula:
+
+$$
+\log p_\psi(z) = \log p_0(u) + \log \lvert \det(\partial u / \partial z) \rvert
 $$
 
 This demo uses a compact RealNVP-style affine coupling flow. It is intentionally simple, meant to show how the prior can be replaced while the VAE interface stays fixed.

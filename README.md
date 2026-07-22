@@ -10,28 +10,6 @@ x -> Encoder -> mu, logvar -> q_phi(z|x) -> z -> Decoder -> x_hat
 
 The fixed part is the probabilistic interface. The replaceable parts are the encoder backbone, decoder backbone, prior, and ELBO configuration.
 
-## Results
-
-All experiments use MNIST.
-
-| Experiment | Backbone | Prior | KL mode | Loss | Recon | KL |
-| --- | --- | --- | --- | ---: | ---: | ---: |
-| MLP VAE | MLP | Standard normal | Analytic | 100.05 | 79.98 | 20.07 |
-| CNN VAE | CNN | Standard normal | Analytic | 95.98 | 75.31 | 20.67 |
-| Beta-VAE | MLP | Standard normal | Analytic | 142.58 | 107.85 | 8.68 |
-| Transformer VAE | Patch Transformer | Standard normal | Analytic | 96.04 | 73.92 | 22.13 |
-| Flow-prior VAE | MLP | RealNVP-style flow | Monte Carlo | 95.75 | 75.99 | 19.76 |
-
-| Experiment | Reconstructions | Prior samples |
-| --- | --- | --- |
-| MLP VAE | <img src="assets/figures/mlp_reconstructions.png" width="260" alt="MLP reconstructions"> | <img src="assets/figures/mlp_samples_from_prior.png" width="260" alt="MLP prior samples"> |
-| CNN VAE | <img src="assets/figures/cnn_reconstructions.png" width="260" alt="CNN reconstructions"> | <img src="assets/figures/cnn_samples_from_prior.png" width="260" alt="CNN prior samples"> |
-| Beta-VAE | <img src="assets/figures/beta_vae_reconstructions.png" width="260" alt="Beta-VAE reconstructions"> | <img src="assets/figures/beta_vae_samples_from_prior.png" width="260" alt="Beta-VAE prior samples"> |
-| Transformer VAE | <img src="assets/figures/transformer_reconstructions.png" width="260" alt="Transformer reconstructions"> | <img src="assets/figures/transformer_samples_from_prior.png" width="260" alt="Transformer prior samples"> |
-| Flow-prior VAE | <img src="assets/figures/flow_prior_reconstructions.png" width="260" alt="Flow-prior reconstructions"> | <img src="assets/figures/flow_prior_samples_from_prior.png" width="260" alt="Flow-prior prior samples"> |
-
-Full metric YAML files live in [`assets/results`](assets/results).
-
 ## Probabilistic Model
 
 A VAE does not encode an image into a deterministic vector. The encoder parameterizes an approximate posterior:
@@ -79,7 +57,11 @@ $$
 Its density is computed by change of variables:
 
 $$
-\log p_\psi(z) = \log p_0(f_\psi^{-1}(z)) + \log\left|\det\frac{\partial f_\psi^{-1}}{\partial z}\right|
+u = f_\psi^{-1}(z)
+$$
+
+$$
+\log p_\psi(z) = \log p_0(u) + \log \lvert \det(\partial u / \partial z) \rvert
 $$
 
 ## VAE Variants
@@ -115,6 +97,28 @@ decode(z) -> x_hat
 ```
 
 Everything else is configured from YAML.
+
+## Results
+
+All experiments use MNIST.
+
+| Experiment | Backbone | Prior | KL mode | Loss | Recon | KL |
+| --- | --- | --- | --- | ---: | ---: | ---: |
+| MLP VAE | MLP | Standard normal | Analytic | 100.05 | 79.98 | 20.07 |
+| CNN VAE | CNN | Standard normal | Analytic | 95.98 | 75.31 | 20.67 |
+| Beta-VAE | MLP | Standard normal | Analytic | 142.58 | 107.85 | 8.68 |
+| Transformer VAE | Patch Transformer | Standard normal | Analytic | 96.04 | 73.92 | 22.13 |
+| Flow-prior VAE | MLP | RealNVP-style flow | Monte Carlo | 95.75 | 75.99 | 19.76 |
+
+| Experiment | Reconstructions | Prior samples |
+| --- | --- | --- |
+| MLP VAE | <img src="assets/figures/mlp_reconstructions.png" width="260" alt="MLP reconstructions"> | <img src="assets/figures/mlp_samples_from_prior.png" width="260" alt="MLP prior samples"> |
+| CNN VAE | <img src="assets/figures/cnn_reconstructions.png" width="260" alt="CNN reconstructions"> | <img src="assets/figures/cnn_samples_from_prior.png" width="260" alt="CNN prior samples"> |
+| Beta-VAE | <img src="assets/figures/beta_vae_reconstructions.png" width="260" alt="Beta-VAE reconstructions"> | <img src="assets/figures/beta_vae_samples_from_prior.png" width="260" alt="Beta-VAE prior samples"> |
+| Transformer VAE | <img src="assets/figures/transformer_reconstructions.png" width="260" alt="Transformer reconstructions"> | <img src="assets/figures/transformer_samples_from_prior.png" width="260" alt="Transformer prior samples"> |
+| Flow-prior VAE | <img src="assets/figures/flow_prior_reconstructions.png" width="260" alt="Flow-prior reconstructions"> | <img src="assets/figures/flow_prior_samples_from_prior.png" width="260" alt="Flow-prior prior samples"> |
+
+Full metric YAML files live in [`assets/results`](assets/results).
 
 ## Quick Use
 
